@@ -54,7 +54,7 @@ class AuthController extends Controller
 
         if (!$admin || !Hash::check($request->password, $admin->password)) {
             return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Unauthorized'
             ], 401);
         }
 

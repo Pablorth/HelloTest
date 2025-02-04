@@ -10,6 +10,21 @@ use Illuminate\Http\Response;
 
 class ProfileController extends Controller
 {
+
+    /**
+     * Display a listing of active profiles.
+     *
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $profiles = Profile::where('statut', 'actif')
+            ->select('id', 'nom', 'prenom', 'image')
+            ->get();
+
+        return response()->json($profiles);
+    }
+
     /**
      * Store a newly created profile in storage.
      *
@@ -18,6 +33,7 @@ class ProfileController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+
         $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
@@ -37,19 +53,6 @@ class ProfileController extends Controller
         return response()->json($profile, 201);
     }
 
-    /**
-     * Display a listing of active profiles.
-     *
-     * @return JsonResponse
-     */
-    public function index(): JsonResponse
-    {
-        $profiles = Profile::where('statut', 'actif')
-            ->select('id', 'nom', 'prenom', 'image')
-            ->get();
-
-        return response()->json($profiles);
-    }
 
     /**
      * Update the specified profile in storage.

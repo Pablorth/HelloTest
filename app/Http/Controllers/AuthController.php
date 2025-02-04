@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
+    /**
+     * Register a new admin user.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -30,6 +37,12 @@ class AuthController extends Controller
         ]);
     }
 
+     /**
+     * Authenticate an admin user and return a token.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -53,6 +66,12 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Log out the authenticated admin user.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -62,4 +81,3 @@ class AuthController extends Controller
         ]);
     }
 }
-

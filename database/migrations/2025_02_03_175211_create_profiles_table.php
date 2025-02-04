@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
+            $table->string('nom');
+            $table->string('prenom');
+            $table->string('image');
+            $table->enum('statut', ['inactif', 'en attente', 'actif'])->default('inactif');
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class ProfileController extends Controller
      * @param  \App\Http\Requests\StoreProfileRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreProfileRequest $request)
+    public function store(StoreProfileRequest $request): JsonResponse
     {
         $data = $request->validated();
         $data['image'] = $request->file('image')->store('profiles', 'public');
@@ -31,8 +31,7 @@ class ProfileController extends Controller
     public function index()
     {
         $profiles = Profile::where('statut', 'actif')
-            ->select('id', 'nom', 'prenom', 'image')
-            ->get();
+            ->get(['id', 'nom', 'prenom', 'image']);
         return response()->json($profiles);
     }
 
@@ -52,7 +51,7 @@ class ProfileController extends Controller
         }
 
         $profile->update($data);
-        return response()->json($profile, 200);
+        return response()->json($profile);
     }
 
     /**
@@ -61,9 +60,9 @@ class ProfileController extends Controller
      * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Profile $profile)
+    public function destroy(Profile $profile): JsonResponse
     {
         $profile->delete();
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Profil supprimé']);
     }
 }

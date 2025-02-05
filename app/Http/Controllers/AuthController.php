@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -41,6 +42,16 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        // Implémentez la logique de connexion ici
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $token = Auth::user()->createToken('auth_token')->plainTextToken;
+            return response()->json(['token' => $token]);
+        }
+
+        return response()->json(['message' => 'Invalid credentials'], 401);
     }
 }

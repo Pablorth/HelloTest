@@ -11,7 +11,7 @@ class UpdateProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,10 +22,10 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'statut' => 'required|in:inactif,en attente,actif',
+            'nom' => 'sometimes|string|max:255',
+            'prenom' => 'sometimes|string|max:255',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'statut' => 'sometimes|in:inactif,en attente,actif',
         ];
     }
 }

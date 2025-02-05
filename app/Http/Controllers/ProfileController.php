@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use Illuminate\Http\JsonResponse;
 
 class ProfileController extends Controller
 {
@@ -42,9 +43,16 @@ class ProfileController extends Controller
      * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateProfileRequest $request, Profile $profile)
+    public function update(UpdateProfileRequest $request, Profile $profile): JsonResponse
     {
-        // Implémentez la logique de mise à jour ici
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('profiles', 'public');
+        }
+
+        $profile->update($data);
+        return response()->json($profile, 200);
     }
 
     /**

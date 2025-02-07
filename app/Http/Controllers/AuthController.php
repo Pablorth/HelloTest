@@ -47,8 +47,9 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
-            $token = Auth::user()->createToken('auth_token')->plainTextToken;
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $admin = Auth::guard('admin')->user();
+            $token = $admin->createToken('auth_token')->plainTextToken;
             return response()->json(['token' => $token]);
         }
 
